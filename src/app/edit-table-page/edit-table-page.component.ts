@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import * as layout from '../state/layout/actions';
+import {Store} from '@ngrx/store';
 
 interface Country {
   id?: number;
@@ -100,11 +102,14 @@ export class EditTablePageComponent implements OnInit {
   pageSize = 6;
   collectionSize = COUNTRIES.length;
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
   }
 
+  closeTableBlock(): void {
+    this.store.dispatch(new layout.CloseTableAction());
+  }
   get countries(): Country[] {
     return COUNTRIES
       .map((country, i) => ({id: i + 1, ...country}))

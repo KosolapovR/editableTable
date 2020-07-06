@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import * as layout from '../state/layout/actions';
+import {select, Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-download-page',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DownloadPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
   }
 
+  openTableBlock(): void {
+    this.store.dispatch(new layout.OpenTableAction());
+  }
 }
