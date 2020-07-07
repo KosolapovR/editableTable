@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import * as layout from '../state/layout/actions';
-import {Store} from '@ngrx/store';
+import * as entities from '../state/entities/actions';
+import {select, Store} from '@ngrx/store';
+import {getEntities} from '../state/entities/selectors';
+import {map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {AddModalComponent} from '../components/add-modal/add-modal.component';
 
 interface Country {
   id?: number;
@@ -97,23 +102,28 @@ const COUNTRIES: Country[] = [
   styleUrls: ['./edit-table-page.component.css']
 })
 export class EditTablePageComponent implements OnInit {
-
+@ViewChild(AddModalComponent) modal: AddModalComponent;
   page = 1;
   pageSize = 6;
-  collectionSize = COUNTRIES.length;
+  collectionSize = 0;
+  modalShow = false;
+  entities$: Observable<any>;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store) {
+    this.entities$ = store.pipe(select(getEntities));
+  }
+
+  @Input() data: Array<object>;
 
   ngOnInit(): void {
+  }
+
+  showAddModal(): void{
+    this.modal.open(1);
+    this.modalShow = true;
   }
 
   closeTableBlock(): void {
     this.store.dispatch(new layout.CloseTableAction());
   }
-  get countries(): Country[] {
-    return COUNTRIES
-      .map((country, i) => ({id: i + 1, ...country}))
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
-
 }

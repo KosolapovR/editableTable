@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div *ngIf="dataLoaded$ | async else downloadBlock">
-    <app-edit-table-page></app-edit-table-page>
+    <app-edit-table-page [data]="entities$|async"></app-edit-table-page>
   </div>
   <ng-template #downloadBlock>
     <app-download-page></app-download-page>
