@@ -3,11 +3,13 @@ import {Entity} from './actions';
 
 export interface IStateEntities {
   lastEntityId: number;
+  selectedEntity: Entity
   entities: Array<Entity>;
 }
 
 const initialState = {
   lastEntityId: 0,
+  selectedEntity: null,
   entities: []
 };
 
@@ -25,6 +27,28 @@ export function reducer(state: IStateEntities = initialState, action: entities.A
         ...state,
         entities: [...state.entities, {id: state.lastEntityId, ...action.payload}],
         lastEntityId: state.lastEntityId + 1
+      };
+    }
+    case entities.DELETE_ENTITY: {
+      const newEntities = state.entities.filter(e => e.id !== action.id);
+      return {
+        ...state,
+        entities: newEntities,
+      };
+    }
+    case entities.UPDATE_ENTITY: {
+      const id = state.entities.findIndex(e => e.id === action.payload.id);
+      const newEntities = [...state.entities];
+      newEntities[id] = action.payload;
+      return {
+        ...state, entities: newEntities
+      };
+    }
+    case entities.SELECT_ENTITY: {
+      const selectedEntity = state.entities.find(e => parseInt(e.id) === parseInt(action.id));
+      return {
+        ...state,
+        selectedEntity: selectedEntity,
       };
     }
     default:

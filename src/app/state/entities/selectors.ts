@@ -14,3 +14,8 @@ export const getfirstEntity = createSelector(
   entities,
   (state: IStateEntities) => state.entities[0]
 );
+
+export const getSelectedEntity = createSelector(
+  entities,
+  (state: IStateEntities) => state.selectedEntity
+);

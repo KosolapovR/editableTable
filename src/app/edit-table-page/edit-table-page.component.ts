@@ -105,8 +105,6 @@ export class EditTablePageComponent implements OnInit {
 @ViewChild(AddModalComponent) modal: AddModalComponent;
   page = 1;
   pageSize = 6;
-  collectionSize = 0;
-  modalShow = false;
   entities$: Observable<any>;
 
   constructor(private store: Store) {
@@ -118,12 +116,11 @@ export class EditTablePageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showAddModal(): void{
-    this.modal.open(1);
-    this.modalShow = true;
-  }
-
   closeTableBlock(): void {
     this.store.dispatch(new layout.CloseTableAction());
+  }
+
+  deleteEntity(id: any) {
+    this.store.dispatch(new entities.DeleteEntity(id));
   }
 }

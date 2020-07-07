@@ -1,0 +1,29 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Внести изменения</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form id="edit-form">
+      <div class="form-group">
+        <div class="container" *ngFor="let column of selectedEntity$|async|keyvalue; let i = index">
+          <div class="row mb-2" *ngIf="column.key !== 'id'">
+            <label class="col-3" for="{{column.key}}">{{column.key}}</label>
+            <div class="input-group col-9">
+              <input class="w-100" id="{{column.key}}" name="{{column.key}}" value="{{column.value}}" type="text"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Save</button>
+  </div>
+</ng-template>
+
+<button type="button" class="btn btn-primary" (click)="openEditModal(content)">EDIT</button>
+
+

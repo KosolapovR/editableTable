@@ -17,17 +17,17 @@
   <tbody>
   <tr
     *ngFor="let entity of entities$|async| slice:(page - 1) * pageSize:(page - 1) * pageSize + pageSize; let i = index">
-    <td>{{entity.id}}</td>
+    <th>{{i + 1}}</th>
     <td *ngFor="let item of entity|keyvalue">
       <ng-container *ngIf="item.key !== 'id'">
         {{item.value}}
       </ng-container>
     </td>
     <td>
-      <button type="button" class="btn btn-primary">EDIT</button>
+      <app-edit-modal entityId="{{entity.id}}"></app-edit-modal>
     </td>
     <td>
-      <button type="button" class="btn btn-danger">DEL</button>
+      <button type="button" class="btn btn-danger" (click)="deleteEntity(entity.id)">DEL</button>
     </td>
   </tr>
   </tbody>
