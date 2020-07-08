@@ -42,6 +42,57 @@ export class EditTablePageComponent implements OnInit {
     FileSaver.saveAs(blob, "data.doc");
   }
 
+  uploadToCSVFile() {
+    const entitiesForUpload: Array<Entity> = [];
+    this.entities$.subscribe(entities => {
+      for (let i = 0; i < entities.length; i++) {
+        entitiesForUpload.push(_.omit(entities[i], ['id']));
+      }
+
+    });
+
+    debugger;
+
+    const csvData = this.convertArrayOfObjectsToCSV({data: entitiesForUpload});
+
+    debugger;
+
+    let blob = new Blob([csvData], {type: "text/csv;charset=utf-8"});
+    FileSaver.saveAs(blob, "data.csv");
+  }
+
+  private convertArrayOfObjectsToCSV(args) {
+    let result, ctr, keys, columnDelimiter, lineDelimiter, data;
+
+    debugger;
+    data = args.data || null;
+    if (data == null || !data.length) {
+      return null;
+    }
+
+    columnDelimiter = args.columnDelimiter || ',';
+    lineDelimiter = args.lineDelimiter || '\n';
+
+    keys = Object.keys(data[0]);
+
+    result = '';
+    result += keys.join(columnDelimiter);
+    result += lineDelimiter;
+
+    data.forEach(function(item) {
+      ctr = 0;
+      keys.forEach(function(key) {
+        if (ctr > 0) result += columnDelimiter;
+
+        result += item[key];
+        ctr++;
+      });
+      result += lineDelimiter;
+    });
+
+    return result;
+  }
+
   private getJsonForUpload(): string
   {
     const entitiesForUpload: Array<Entity> = [];
@@ -59,7 +110,6 @@ export class EditTablePageComponent implements OnInit {
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
   };
-
   ngOnInit(): void {
   }
 }
