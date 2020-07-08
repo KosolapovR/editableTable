@@ -6,9 +6,10 @@ export const ADD_ENTITY = '[Entities] add entity';
 export const DELETE_ENTITY = '[Entities] delete entity';
 export const SELECT_ENTITY = '[Entities] select entity';
 export const UPDATE_ENTITY = '[Entities] update entity';
+export const UPDATE_SINGLE_ENTITY_FIELD = '[Entities] update single field';
 
 export interface Entity {
-  [key: string ]: any;
+  [key: string]: any;
 }
 
 
@@ -40,6 +41,13 @@ export class UpdateEntityAction implements Action {
   }
 }
 
+export class UpdateSingleEntityFieldAction implements Action {
+  readonly type = UPDATE_SINGLE_ENTITY_FIELD;
+
+  constructor(public payload: {id, key, value}) {
+  }
+}
+
 export class SelectEntityAction implements Action {
   readonly type = SELECT_ENTITY;
 
@@ -54,4 +62,11 @@ export class DeleteEntityAction implements Action {
   }
 }
 
-export type Actions = DownloadJsonAction | UploadJsonAction | AddEntityAction | SelectEntityAction | DeleteEntityAction | UpdateEntityAction;
+export type Actions =
+  DownloadJsonAction
+  | UploadJsonAction
+  | AddEntityAction
+  | SelectEntityAction
+  | DeleteEntityAction
+  | UpdateEntityAction
+  | UpdateSingleEntityFieldAction;

@@ -8,6 +8,8 @@ import {StoreModule} from '@ngrx/store';
 import {reducers} from './state';
 import {AddModalComponent} from './components/add-modal/add-modal.component';
 import {EditModalComponent} from './components/edit-modal/edit-modal.component';
+import { EditCellComponent } from './components/edit-cell/edit-cell.component';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -17,11 +19,13 @@ import {EditModalComponent} from './components/edit-modal/edit-modal.component';
     EditTablePageComponent,
     AddModalComponent,
     EditModalComponent,
+    EditCellComponent,
   ],
   imports: [
     BrowserModule,
     NgbModule,
     StoreModule.forRoot(reducers),
+    FormsModule,
   ],
   bootstrap: [AppComponent]
 })

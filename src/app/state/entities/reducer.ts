@@ -55,6 +55,13 @@ export function reducer(state: IStateEntities = initialState, action: entities.A
         ...state, entities: newEntities
       };
     }
+    case entities.UPDATE_SINGLE_ENTITY_FIELD: {
+      const newEntities = [...state.entities];
+      newEntities[action.payload.id] = {...newEntities[action.payload.id], [action.payload.key]: action.payload.value};
+      return {
+        ...state, entities: newEntities
+      };
+    }
     case entities.SELECT_ENTITY: {
       const selectedEntity = state.entities.find(e => parseInt(e.id) === parseInt(action.id));
       return {
