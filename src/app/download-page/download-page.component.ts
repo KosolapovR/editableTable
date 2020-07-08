@@ -49,7 +49,6 @@ export class DownloadPageComponent implements OnInit {
 
     reader.onload = function() {
       const json = `{entities: ${reader.result}}`;
-      debugger;
       self.downloadJson(json);
     };
 

@@ -5,6 +5,7 @@ import {getfirstEntity} from '../../state/entities/selectors';
 import {Observable} from 'rxjs';
 import {Entity} from '../../state/entities/actions';
 import * as entities from  '../../state/entities/actions';
+import {KeyValue} from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -43,4 +44,8 @@ export class AddModalComponent implements OnInit {
     this.store.dispatch(new entities.AddEntityAction(entity));
     this.modalService.dismissAll();
   }
+
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
+  };
 }

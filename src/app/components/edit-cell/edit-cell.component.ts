@@ -2,6 +2,7 @@ import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import * as entities from '../../state/entities/actions';
+import {KeyValue} from '@angular/common';
 
 const VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -30,7 +31,6 @@ export class EditCellComponent implements ControlValueAccessor {
   get value() {
     return this._value;
   }
-
   set value(val: any) {
     if (val !== this._value) {
       this._value = val;
@@ -62,4 +62,8 @@ export class EditCellComponent implements ControlValueAccessor {
   writeValue(val: any): void {
     this._value = val;
   }
+
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
+  };
 }

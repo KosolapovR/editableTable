@@ -1,8 +1,6 @@
-<div>
   <div *ngIf="editing">
     <input (blur)="OnBlur()" [name]="value" [(ngModel)]="value" type="text"/>
   </div>
   <div *ngIf="!editing">
     <span (click)="startEdit(value)" (focus)="startEdit(value)">{{value}}</span>
   </div>
-</div>

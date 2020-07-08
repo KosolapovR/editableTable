@@ -20,7 +20,6 @@ const initialState = {
 export function reducer(state: IStateEntities = initialState, action: entities.Actions): IStateEntities {
   switch (action.type) {
     case entities.DOWNLOAD_JSON: {
-      debugger;
       return {
         ...state,
         entities: action.payload.entities,

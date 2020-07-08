@@ -8,7 +8,7 @@
   <div class="modal-body">
     <form id="edit-form">
       <div class="form-group">
-        <div class="container" *ngFor="let column of selectedEntity$|async|keyvalue; let i = index">
+        <div class="container" *ngFor="let column of selectedEntity$|async|keyvalue : originalOrder; let i = index">
           <div class="row mb-2" *ngIf="column.key !== 'id'">
             <label class="col-3" for="{{column.key}}">{{column.key}}</label>
             <div class="input-group col-9">
