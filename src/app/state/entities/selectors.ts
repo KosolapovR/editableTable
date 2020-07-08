@@ -10,12 +10,22 @@ export const getEntities = createSelector(
   (state: IStateEntities) => state.entities
 );
 
-export const getfirstEntity = createSelector(
-  entities,
-  (state: IStateEntities) => state.entities[0]
-);
-
 export const getSelectedEntity = createSelector(
   entities,
   (state: IStateEntities) => state.selectedEntity
+);
+
+export const getUploadToTextArea = createSelector(
+  entities,
+  (state: IStateEntities) => state.uploadToTextArea
+);
+
+export const getJsonEntities = createSelector(
+  entities,
+  (state: IStateEntities) => state.jsonEntities
+);
+
+export const getfirstEntity = createSelector(
+  entities,
+  (state: IStateEntities) => state.entities[0]
 );

@@ -2,6 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import * as layout from '../state/layout/actions';
 import * as entities from '../state/entities/actions';
 import {select, Store} from '@ngrx/store';
+import {getEntities, getJsonEntities, getUploadToTextArea} from '../state/entities/selectors';
+import {Observable} from 'rxjs';
+import {Entity} from '../state/entities/actions';
+declare var $: any;
 
 @Component({
   selector: 'app-download-page',
@@ -9,14 +13,22 @@ import {select, Store} from '@ngrx/store';
   styleUrls: ['./download-page.component.css']
 })
 export class DownloadPageComponent implements OnInit {
+  isUploadToTextArea$: Observable<boolean>;
+  textAreaValue;
+  entities$: Observable<Entity>;
+  jsonEntities$: Observable<string>;
+
   constructor(private store: Store) {
+    this.isUploadToTextArea$ = this.store.pipe(select(getUploadToTextArea));
+    this.jsonEntities$ = this.store.pipe(select(getJsonEntities));
+    this.entities$ = this.store.pipe(select(getEntities));
   }
 
   ngOnInit(): void {
   }
 
-  openTableBlock(val): void {
-    const json = `{entities: ${val}}`;
+  openTableBlock(): void {
+    const json = `{entities: ${$('textarea').val()}}`;
     let payload;
     try {
       payload = JSON.parse(json.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": '));

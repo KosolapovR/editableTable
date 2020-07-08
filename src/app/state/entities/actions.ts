@@ -1,6 +1,7 @@
 import {Action} from '@ngrx/store';
 
-export const DOWNLOAD_JSON = '[Entities] Save download json';
+export const DOWNLOAD_JSON = '[Entities] download json';
+export const UPLOAD_JSON = '[Entities] upload json';
 export const ADD_ENTITY = '[Entities] add entity';
 export const DELETE_ENTITY = '[Entities] delete entity';
 export const SELECT_ENTITY = '[Entities] select entity';
@@ -10,6 +11,7 @@ export interface Entity {
   [key: string ]: any;
 }
 
+
 export class DownloadJsonAction implements Action {
   readonly type = DOWNLOAD_JSON;
 
@@ -17,32 +19,39 @@ export class DownloadJsonAction implements Action {
   }
 }
 
-export class AddEntity implements Action {
+export class UploadJsonAction implements Action {
+  readonly type = UPLOAD_JSON;
+
+  constructor(public  payload: string) {
+  }
+}
+
+export class AddEntityAction implements Action {
   readonly type = ADD_ENTITY;
 
   constructor(public payload: Entity) {
   }
 }
 
-export class UpdateEntity implements Action {
+export class UpdateEntityAction implements Action {
   readonly type = UPDATE_ENTITY;
 
   constructor(public payload: Entity) {
   }
 }
 
-export class SelectEntity implements Action {
+export class SelectEntityAction implements Action {
   readonly type = SELECT_ENTITY;
 
   constructor(public id) {
   }
 }
 
-export class DeleteEntity implements Action {
+export class DeleteEntityAction implements Action {
   readonly type = DELETE_ENTITY;
 
   constructor(public id) {
   }
 }
 
-export type Actions = DownloadJsonAction | AddEntity | SelectEntity | DeleteEntity | UpdateEntity;
+export type Actions = DownloadJsonAction | UploadJsonAction | AddEntityAction | SelectEntityAction | DeleteEntityAction | UpdateEntityAction;

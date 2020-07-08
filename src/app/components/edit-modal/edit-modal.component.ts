@@ -14,7 +14,7 @@ declare var $: any;
   styleUrls: ['./edit-modal.component.css']
 })
 export class EditModalComponent implements OnInit {
-  @Input() entityId;
+  @Input() id;
 
   private modalRef;
   selectedEntity$: Observable<Entity>;
@@ -27,20 +27,20 @@ export class EditModalComponent implements OnInit {
 
 
   openEditModal(content) {
-    this.store.dispatch(new entities.SelectEntity(this.entityId))
+    this.store.dispatch(new entities.SelectEntityAction(this.id))
     this.modalRef = this.modalService.open(content);
   }
 
   closeModal(): void {
     const inputs = $('#edit-form input');
-    let str = '{"entity": {"id": "' + this.entityId + '"';
+    let str = '{"entity": {"id": "' + this.id + '"';
     inputs.each((i, input) => {
         str += `,"${input.id}":"${input.value}"`;
     });
     str += '}}';
     const entity: Entity = JSON.parse(str).entity;
     entity.id = parseInt(entity.id);
-    this.store.dispatch(new entities.UpdateEntity(entity));
+    this.store.dispatch(new entities.UpdateEntityAction(entity));
     this.modalService.dismissAll();
   }
 }

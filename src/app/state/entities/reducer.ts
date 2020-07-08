@@ -5,12 +5,16 @@ export interface IStateEntities {
   lastEntityId: number;
   selectedEntity: Entity
   entities: Array<Entity>;
+  uploadToTextArea: boolean;
+  jsonEntities: string
 }
 
 const initialState = {
   lastEntityId: 0,
   selectedEntity: null,
-  entities: []
+  entities: [],
+  uploadToTextArea: false,
+  jsonEntities: '',
 };
 
 export function reducer(state: IStateEntities = initialState, action: entities.Actions): IStateEntities {
@@ -20,6 +24,13 @@ export function reducer(state: IStateEntities = initialState, action: entities.A
         ...state,
         entities: action.payload.entities,
         lastEntityId: action.payload.entities.length + 1
+      };
+    }
+    case entities.UPLOAD_JSON: {
+      return {
+        ...state,
+        uploadToTextArea: true,
+        jsonEntities: action.payload
       };
     }
     case entities.ADD_ENTITY: {

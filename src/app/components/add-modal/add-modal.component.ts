@@ -40,7 +40,7 @@ export class AddModalComponent implements OnInit {
     str += '}}';
 
     const entity: Entity = JSON.parse(str).entity;
-    this.store.dispatch(new entities.AddEntity(entity));
+    this.store.dispatch(new entities.AddEntityAction(entity));
     this.modalService.dismissAll();
   }
 }
