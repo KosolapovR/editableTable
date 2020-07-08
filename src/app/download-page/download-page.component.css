@@ -6,3 +6,7 @@ h1{
   width: 700px;
   margin: 0 auto;
 }
+
+.invisible{
+  width: 0;
+}

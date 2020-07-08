@@ -5,7 +5,8 @@ import {select, Store} from '@ngrx/store';
 import {getEntities, getJsonEntities, getUploadToTextArea} from '../state/entities/selectors';
 import {Observable} from 'rxjs';
 import {Entity} from '../state/entities/actions';
-declare var $: any;
+
+declare let $: any;
 
 @Component({
   selector: 'app-download-page',
@@ -14,10 +15,10 @@ declare var $: any;
 })
 export class DownloadPageComponent implements OnInit {
   isUploadToTextArea$: Observable<boolean>;
-  textAreaValue;
   entities$: Observable<Entity>;
   jsonEntities$: Observable<string>;
   textFile: File = null;
+  csvFile: File = null;
 
   constructor(private store: Store) {
     this.isUploadToTextArea$ = this.store.pipe(select(getUploadToTextArea));
@@ -25,11 +26,11 @@ export class DownloadPageComponent implements OnInit {
     this.entities$ = this.store.pipe(select(getEntities));
   }
 
-  ngOnInit(): void {
-  }
-
   openTableBlock(): void {
-    const json = `{entities: ${$('textarea').val()}}`;
+    let json = $('textarea').val().replace(/(['"])?([a-z0-9A-Z_а-яА-ЯёЁ \-]+)(['"])?:/g, '"$2": ');
+    debugger;
+    json = `{entities: ${json}}`;
+
     this.downloadJson(json);
   }
 
@@ -38,7 +39,26 @@ export class DownloadPageComponent implements OnInit {
     return items.every(obj => Object.keys(obj).length === keysLength);
   }
 
-  readFile($event: any) {
+
+  readCSVFile($event: any) {
+    this.csvFile = $event.target.files[0];
+
+    const self = this;
+
+    let reader = new FileReader();
+    reader.readAsText(this.csvFile);
+
+    reader.onload = function() {
+      const json = `{entities: ${self.csvToJSON(reader.result)}}`;
+      self.downloadJson(json);
+    };
+
+    reader.onerror = function(e) {
+      console.log(reader.error);
+    };
+  }
+
+  readTextFile($event: any) {
     this.textFile = $event.target.files[0];
 
     const self = this;
@@ -57,11 +77,35 @@ export class DownloadPageComponent implements OnInit {
     };
   }
 
-  private downloadJson(json: string){
+  private csvToJSON(csv) {
+
+    let lines = csv.split('\r\n');
+    let result = [];
+
+    let headers = lines[0].split(',');
+
+    for (let i = 1; i < lines.length - 1; i++) {
+
+      let obj = {};
+      let currentLine = lines[i].split(',');
+
+      for (let j = 0; j < headers.length; j++) {
+        obj[headers[j]] = currentLine[j];
+      }
+
+      result.push(obj);
+
+    }
+
+    //return result; //JavaScript object
+    return JSON.stringify(result); //JSON
+  }
+
+  private downloadJson(json: string) {
     let payload;
     try {
       payload = JSON.parse(json.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": '));
-    }catch (e) {
+    } catch (e) {
       console.log('Не верный формат json');
     }
 
@@ -73,5 +117,8 @@ export class DownloadPageComponent implements OnInit {
     } else {
       console.log('Все объекты должны иметь одинаковое количество пар ключ-значение');
     }
+  }
+
+  ngOnInit(): void {
   }
 }

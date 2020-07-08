@@ -4,10 +4,13 @@
   <textarea  cols="100" rows="10" *ngIf="!(isUploadToTextArea$ | async)"></textarea>
 </div>
 <div class="d-flex justify-content-center mt-2">
-<!--  <button class="btn btn-primary ml-4">Загрузить CSV</button>-->
   <div>
-    <label class="btn btn-secondary" for="file">Загрузить из файла</label>
-    <input type="file" class="invisible"  id="file" (change)="readFile($event)">
+    <label class="btn btn-sm btn-secondary" for="fileTXT">Загрузить текстовый файл</label>
+    <input type="file" class="invisible"  id="fileTXT" (change)="readTextFile($event)">
   </div>
-  <button class="btn btn-success ml-4" (click)="openTableBlock()">Загрузить</button>
+  <div class="ml-4">
+    <label class="btn btn-sm btn-secondary" for="fileCSV">Загрузить csv файл</label>
+    <input type="file" class="invisible"  id="fileCSV" (change)="readCSVFile($event)">
+  </div>
+  <button class="btn btn-sm btn-success ml-4" (click)="openTableBlock()">Продолжить</button>
 </div>

@@ -18,7 +18,7 @@ import * as FileSaver from 'file-saver';
 export class EditTablePageComponent implements OnInit {
   @ViewChild(AddModalComponent) modal: AddModalComponent;
   page = 1;
-  pageSize = 6;
+  pageSize = 8;
   entities$: Observable<any>;
 
   constructor(private store: Store) {
@@ -51,11 +51,7 @@ export class EditTablePageComponent implements OnInit {
 
     });
 
-    debugger;
-
     const csvData = this.convertArrayOfObjectsToCSV({data: entitiesForUpload});
-
-    debugger;
 
     let blob = new Blob([csvData], {type: "text/csv;charset=utf-8"});
     FileSaver.saveAs(blob, "data.csv");
@@ -64,7 +60,6 @@ export class EditTablePageComponent implements OnInit {
   private convertArrayOfObjectsToCSV(args) {
     let result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
-    debugger;
     data = args.data || null;
     if (data == null || !data.length) {
       return null;
@@ -93,8 +88,7 @@ export class EditTablePageComponent implements OnInit {
     return result;
   }
 
-  private getJsonForUpload(): string
-  {
+  private getJsonForUpload(): string {
     const entitiesForUpload: Array<Entity> = [];
     this.entities$.subscribe(entities => {
       for (let i = 0; i < entities.length; i++) {
@@ -104,7 +98,6 @@ export class EditTablePageComponent implements OnInit {
     });
 
     return JSON.stringify(entitiesForUpload).replace(/"([^"]+)":/g, '$1:');
-
   }
 
   originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {

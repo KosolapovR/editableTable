@@ -28,7 +28,7 @@
       <app-edit-modal id="{{entity.id}}"></app-edit-modal>
     </td>
     <td>
-      <button type="button" class="btn btn-danger" (click)="deleteEntity(entity.id)">DEL</button>
+      <button type="button" class="btn btn-sm btn-danger" (click)="deleteEntity(entity.id)">DEL</button>
     </td>
   </tr>
   </tbody>
@@ -36,7 +36,7 @@
 
 <div class="d-flex justify-content-between p-2">
   <ngb-pagination [collectionSize]="(entities$|async).length"
-                  [maxSize]="5"
+                  [maxSize]="10"
                   [rotate]="true"
                   [ellipses]="false"
                   [(page)]="page"
@@ -46,8 +46,8 @@
 </div>
 
 <div class="d-flex justify-content-center mt-2">
-  <button class="btn btn-primary" (click)="uploadToTextFile()">Сохранить в текстовом формате</button>
-  <button class="btn btn-primary ml-4" (click)="uploadToCSVFile()">Сохранить в формате CSV</button>
-  <button class="btn btn-success ml-4" (click)="uploadToTextArea()">Выгрузить</button>
+  <button class="btn btn-sm btn-primary" (click)="uploadToTextFile()">Сохранить в текстовом формате</button>
+  <button class="btn btn-sm btn-primary ml-4" (click)="uploadToCSVFile()">Сохранить в формате CSV</button>
+  <button class="btn btn-sm btn-success ml-4" (click)="uploadToTextArea()">Выгрузить</button>
 </div>
 
