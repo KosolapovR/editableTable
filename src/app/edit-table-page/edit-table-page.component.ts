@@ -7,6 +7,7 @@ import {getEntities} from '../state/entities/selectors';
 import {Observable} from 'rxjs';
 import {AddModalComponent} from '../components/add-modal/add-modal.component';
 import {Entity} from '../state/entities/actions';
+import {KeyValue} from '@angular/common';
 
 @Component({
   selector: 'app-edit-table-page',
@@ -14,7 +15,7 @@ import {Entity} from '../state/entities/actions';
   styleUrls: ['./edit-table-page.component.css']
 })
 export class EditTablePageComponent implements OnInit {
-@ViewChild(AddModalComponent) modal: AddModalComponent;
+  @ViewChild(AddModalComponent) modal: AddModalComponent;
   page = 1;
   pageSize = 6;
   entities$: Observable<any>;
@@ -25,31 +26,27 @@ export class EditTablePageComponent implements OnInit {
 
   @Input() data: Array<object>;
 
-  ngOnInit(): void {
-  }
-
-  closeTableBlock(): void {
-    }
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
+  };
 
   deleteEntity(id: any) {
     this.store.dispatch(new entities.DeleteEntityAction(id));
   }
 
-  logData(entities){
-
-    debugger;
-  }
-
   uploadToTextArea() {
     const entitiesForUpload: Array<Entity> = [];
     this.entities$.subscribe(entities => {
-      for(let i = 0; i < entities.length; i++){
-        entitiesForUpload.push(_.omit(entities[i], ['id']))
+      for (let i = 0; i < entities.length; i++) {
+        entitiesForUpload.push(_.omit(entities[i], ['id']));
       }
 
     });
-    const json = JSON.stringify(entitiesForUpload).replace(/"([^"]+)":/g, '$1:')
+    const json = JSON.stringify(entitiesForUpload).replace(/"([^"]+)":/g, '$1:');
     this.store.dispatch(new entities.UploadJsonAction(json));
     this.store.dispatch(new layout.CloseTableAction());
+  }
+
+  ngOnInit(): void {
   }
 }

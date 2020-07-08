@@ -5,7 +5,7 @@
   <thead>
   <tr>
     <th>#</th>
-    <th *ngFor="let item of (entities$|async)[0] | keyvalue">
+    <th *ngFor="let item of (entities$|async)[0] | keyvalue : originalOrder">
       <ng-container *ngIf="item.key !== 'id'">
         {{item.key}}
       </ng-container>
@@ -18,9 +18,10 @@
   <tr
     *ngFor="let entity of entities$|async| slice:(page - 1) * pageSize:(page - 1) * pageSize + pageSize; let i = index">
     <th>{{i + 1}}</th>
-    <td *ngFor="let item of entity|keyvalue">
+    <td *ngFor="let item of entity|keyvalue : originalOrder">
       <ng-container *ngIf="item.key !== 'id'">
-        <app-edit-cell [(ngModel)]="item.value" [_value]="item.value" [col]="item.key" [entityId]="entity.id"></app-edit-cell>
+        <app-edit-cell [(ngModel)]="item.value" [_value]="item.value" [col]="item.key"
+                       [entityId]="entity.id"></app-edit-cell>
       </ng-container>
     </td>
     <td>
@@ -34,12 +35,18 @@
 </table>
 
 <div class="d-flex justify-content-between p-2">
-  <ngb-pagination [collectionSize]="(entities$|async).length" [(page)]="page" [pageSize]="pageSize">
+  <ngb-pagination [collectionSize]="(entities$|async).length"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [boundaryLinks]="true">
   </ngb-pagination>
 </div>
 
 <div class="d-flex justify-content-center mt-2">
-  <button class="btn btn-primary">Загрузить из файла</button>
+  <button class="btn btn-primary">Сохранить в файл</button>
   <button class="btn btn-primary ml-4">Выгрузить CSV</button>
   <button class="btn btn-success ml-4" (click)="uploadToTextArea()">Выгрузить</button>
 </div>
