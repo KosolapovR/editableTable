@@ -1,3 +1,14 @@
 table td{
   padding: 0.4rem;
 }
+
+.icon{
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.icon--delete{
+  background: url("../../assets/icons/delete.svg") center;
+  background-size: cover;
+}

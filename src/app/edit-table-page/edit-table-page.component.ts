@@ -16,16 +16,16 @@ import * as FileSaver from 'file-saver';
   styleUrls: ['./edit-table-page.component.css']
 })
 export class EditTablePageComponent implements OnInit {
+  @Input() data: Array<object>;
   @ViewChild(AddModalComponent) modal: AddModalComponent;
   page = 1;
   pageSize = 8;
+
   entities$: Observable<any>;
 
   constructor(private store: Store) {
     this.entities$ = store.pipe(select(getEntities));
   }
-
-  @Input() data: Array<object>;
   deleteEntity(id: any) {
     this.store.dispatch(new entities.DeleteEntityAction(id));
   }

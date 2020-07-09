@@ -29,3 +29,8 @@ export const getfirstEntity = createSelector(
   entities,
   (state: IStateEntities) => state.entities[0]
 );
+
+export const getErrorMessage = createSelector(
+  entities,
+  (state: IStateEntities) => state.errorMsg
+);

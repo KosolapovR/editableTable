@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import * as layout from '../state/layout/actions';
 import * as entities from '../state/entities/actions';
 import {select, Store} from '@ngrx/store';
-import {getEntities, getJsonEntities, getUploadToTextArea} from '../state/entities/selectors';
+import {getEntities, getErrorMessage, getJsonEntities, getUploadToTextArea} from '../state/entities/selectors';
 import {Observable} from 'rxjs';
 import {Entity} from '../state/entities/actions';
 
@@ -19,16 +19,17 @@ export class DownloadPageComponent implements OnInit {
   jsonEntities$: Observable<string>;
   textFile: File = null;
   csvFile: File = null;
+  errorMsg$: Observable<string>;
 
   constructor(private store: Store) {
     this.isUploadToTextArea$ = this.store.pipe(select(getUploadToTextArea));
     this.jsonEntities$ = this.store.pipe(select(getJsonEntities));
     this.entities$ = this.store.pipe(select(getEntities));
+    this.errorMsg$ = this.store.pipe(select(getErrorMessage));
   }
 
   openTableBlock(): void {
     let json = $('textarea').val().replace(/(['"])?([a-z0-9A-Z_а-яА-ЯёЁ \-]+)(['"])?:/g, '"$2": ');
-    debugger;
     json = `{entities: ${json}}`;
 
     this.downloadJson(json);
@@ -106,16 +107,19 @@ export class DownloadPageComponent implements OnInit {
     try {
       payload = JSON.parse(json.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": '));
     } catch (e) {
-      console.log('Не верный формат json');
+      this.store.dispatch(new entities.InvalidJsonAction('Неверный формат json'));
     }
 
     payload.entities = payload.entities.map((item, i) => ({id: i + 1, ...item}));
 
     if (this.isValid(payload.entities)) {
+      this.store.dispatch(new entities.InvalidJsonAction(''));
       this.store.dispatch(new entities.DownloadJsonAction(payload));
       this.store.dispatch(new layout.OpenTableAction());
     } else {
-      console.log('Все объекты должны иметь одинаковое количество пар ключ-значение');
+      this.store.dispatch(new entities.InvalidJsonAction(
+        'Все объекты должны иметь одинаковое количество пар ключ-значение'
+      ));
     }
   }
 

@@ -7,6 +7,7 @@ export const DELETE_ENTITY = '[Entities] delete entity';
 export const SELECT_ENTITY = '[Entities] select entity';
 export const UPDATE_ENTITY = '[Entities] update entity';
 export const UPDATE_SINGLE_ENTITY_FIELD = '[Entities] update single field';
+export const INVALID_JSON = '[Entities] invalid json';
 
 export interface Entity {
   [key: string]: any;
@@ -62,6 +63,13 @@ export class DeleteEntityAction implements Action {
   }
 }
 
+export class InvalidJsonAction implements Action {
+  readonly type = INVALID_JSON;
+
+  constructor(public errorMsg: string) {
+  }
+}
+
 export type Actions =
   DownloadJsonAction
   | UploadJsonAction
@@ -69,4 +77,5 @@ export type Actions =
   | SelectEntityAction
   | DeleteEntityAction
   | UpdateEntityAction
-  | UpdateSingleEntityFieldAction;
+  | UpdateSingleEntityFieldAction
+  | InvalidJsonAction;

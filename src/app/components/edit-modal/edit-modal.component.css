@@ -1,3 +1,15 @@
 button{
   outline: none;
 }
+
+.icon{
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.icon--edit{
+  background: url("../../../assets/icons/edit.svg") center;
+  background-size: cover;
+}
+

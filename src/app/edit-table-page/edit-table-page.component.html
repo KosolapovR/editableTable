@@ -11,7 +11,6 @@
       </ng-container>
     </th>
     <th></th>
-    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -24,11 +23,9 @@
                        [entityId]="entity.id"></app-edit-cell>
       </ng-container>
     </td>
-    <td>
+    <td class="d-flex justify-content-end">
       <app-edit-modal id="{{entity.id}}"></app-edit-modal>
-    </td>
-    <td>
-      <button type="button" class="btn btn-sm btn-danger" (click)="deleteEntity(entity.id)">DEL</button>
+      <button type="button" class="btn btn-sm btn-danger ml-2" (click)="deleteEntity(entity.id)"><span class="icon icon--delete"></span></button>
     </td>
   </tr>
   </tbody>

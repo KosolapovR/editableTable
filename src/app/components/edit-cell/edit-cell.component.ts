@@ -39,7 +39,6 @@ export class EditCellComponent implements ControlValueAccessor {
   }
 
   OnBlur() {
-    debugger;
     this.store.dispatch(new entities.UpdateSingleEntityFieldAction(
       {id: (this.entityId - 1), key: this.col, value: this.value}
     ));

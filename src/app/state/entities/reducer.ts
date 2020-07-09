@@ -6,7 +6,8 @@ export interface IStateEntities {
   selectedEntity: Entity
   entities: Array<Entity>;
   uploadToTextArea: boolean;
-  jsonEntities: string
+  jsonEntities: string;
+  errorMsg: string;
 }
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   entities: [],
   uploadToTextArea: false,
   jsonEntities: '',
+  errorMsg: ''
 };
 
 export function reducer(state: IStateEntities = initialState, action: entities.Actions): IStateEntities {
@@ -67,6 +69,12 @@ export function reducer(state: IStateEntities = initialState, action: entities.A
       return {
         ...state,
         selectedEntity: selectedEntity,
+      };
+    }
+    case entities.INVALID_JSON: {
+      return {
+        ...state,
+        errorMsg: action.errorMsg,
       };
     }
     default:
