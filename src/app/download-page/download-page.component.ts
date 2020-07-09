@@ -5,7 +5,6 @@ import {select, Store} from '@ngrx/store';
 import {getEntities, getErrorMessage, getJsonEntities, getUploadToTextArea} from '../state/entities/selectors';
 import {Observable} from 'rxjs';
 import {Entity} from '../state/entities/actions';
-
 declare let $: any;
 
 @Component({
@@ -29,8 +28,8 @@ export class DownloadPageComponent implements OnInit {
   }
 
   openTableBlock(): void {
-    let json = $('textarea').val().replace(/(['"])?([a-z0-9A-Z_а-яА-ЯёЁ \-]+)(['"])?:/g, '"$2": ');
-    json = `{entities: ${json}}`;
+    let json = $('textarea').val().replace(/(['"])?([a-z0-9A-Z_а-яА-ЯёЁ \-]+)(['"])?([ ]*)?:/g, '"$2": ');
+    json = `{"entities": ${json}}`;
 
     this.downloadJson(json);
   }
@@ -50,8 +49,10 @@ export class DownloadPageComponent implements OnInit {
     reader.readAsText(this.csvFile);
 
     reader.onload = function() {
-      const json = `{entities: ${self.csvToJSON(reader.result)}}`;
-      self.downloadJson(json);
+      let arr = self.CSVtoArray(reader.result);
+      let json = self.arrayToJson(arr);
+      debugger;
+      self.downloadJson(json, true);
     };
 
     reader.onerror = function(e) {
@@ -78,34 +79,15 @@ export class DownloadPageComponent implements OnInit {
     };
   }
 
-  private csvToJSON(csv) {
-
-    let lines = csv.split('\r\n');
-    let result = [];
-
-    let headers = lines[0].split(',');
-
-    for (let i = 1; i < lines.length - 1; i++) {
-
-      let obj = {};
-      let currentLine = lines[i].split(',');
-
-      for (let j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentLine[j];
-      }
-
-      result.push(obj);
-
-    }
-
-    //return result; //JavaScript object
-    return JSON.stringify(result); //JSON
-  }
-
-  private downloadJson(json: string) {
+  private downloadJson(json: string, csv: boolean = false) {
     let payload;
+    debugger;
     try {
-      payload = JSON.parse(json.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": '));
+      if(!csv){
+        payload = JSON.parse(json.replace(/(['"])?([ a-z0-9A-Z_а-яА-Я]+)(['"])?:/g, '"$2": '));
+      }else{
+        payload = JSON.parse(json);
+      }
     } catch (e) {
       this.store.dispatch(new entities.InvalidJsonAction('Неверный формат json'));
     }
@@ -122,6 +104,37 @@ export class DownloadPageComponent implements OnInit {
       ));
     }
   }
+
+  arrayToJson(arr: Array<Array<any>>): string{
+    let json = '';
+    const entitiesArray = [];
+    for(let row = 1; row < arr.length; row++){
+      let entity = {};
+      for(let col = 0; col < arr[0].length; col++){
+        entity[arr[0][col]] = arr[row][col];
+      }
+      entitiesArray.push(entity);
+    }
+    json = `{"entities": ${JSON.stringify(entitiesArray)}}`;
+    return json
+  }
+
+  CSVtoArray(text) {
+    let p = '', row = [''], ret = [row], i = 0, r = 0, s = !0, l;
+    for (l of text) {
+      if ('"' === l) {
+        if (s && l === p) row[i] += l;
+        s = !s;
+      } else if (',' === l && s) l = row[++i] = '';
+      else if ('\n' === l && s) {
+        if ('\r' === p) row[i] = row[i].slice(0, -1);
+        row = ret[++r] = [l = '']; i = 0;
+      } else row[i] += l;
+      p = l;
+    }
+    ret.pop();
+    return ret;
+  };
 
   ngOnInit(): void {
   }

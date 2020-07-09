@@ -36,7 +36,7 @@ export class EditModalComponent implements OnInit {
     const inputs = $('#edit-form input');
     let str = '{"entity": {"id": "' + this.id + '"';
     inputs.each((i, input) => {
-        str += `,"${input.id}":"${input.value}"`;
+        str += `,"${input.id}":"${input.value.replace(/"/g, '\\"')}"`;
     });
     str += '}}';
     const entity: Entity = JSON.parse(str).entity;

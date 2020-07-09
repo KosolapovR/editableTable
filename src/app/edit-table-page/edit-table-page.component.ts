@@ -79,6 +79,10 @@ export class EditTablePageComponent implements OnInit {
       keys.forEach(function(key) {
         if (ctr > 0) result += columnDelimiter;
 
+        if(item[key].match(/,/)){
+          item[key] = `"${item[key]}"`;
+        }
+
         result += item[key];
         ctr++;
       });

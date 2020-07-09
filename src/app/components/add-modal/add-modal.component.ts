@@ -33,9 +33,9 @@ export class AddModalComponent implements OnInit {
 
     inputs.each((i, input) => {
       if (i === 0){
-        str += `"${input.id}":"${input.value}"`;
+        str += `"${input.id}":"${input.value.replace(/"/g, '\\"')}"`;
       }else{
-        str += `,"${input.id}":"${input.value}"`;
+        str += `,"${input.id}":"${input.value.replace(/"/g, '\\"')}"`;
       }
     });
     str += '}}';
