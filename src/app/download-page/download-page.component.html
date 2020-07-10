@@ -1,11 +1,11 @@
 <h1 class="m-2">Введите данные в json-формате:</h1>
 <div class="textAreaContainer mt-2" *ngIf="(errorMsg$ | async).length">
-  <textarea  cols="100" rows="10" class="textArea--error" *ngIf="(isUploadToTextArea$ | async)">{{jsonEntities$ | async }}</textarea>
-  <textarea  cols="100" rows="10" class="textArea--error" *ngIf="!(isUploadToTextArea$ | async)"></textarea>
+  <textarea #textarea  cols="100" rows="10" class="textArea--error" *ngIf="(isUploadToTextArea$ | async)">{{jsonEntities$ | async }}</textarea>
+  <textarea #textarea cols="100" rows="10" class="textArea--error" *ngIf="!(isUploadToTextArea$ | async)"></textarea>
 </div>
 <div class="textAreaContainer mt-2" *ngIf="!(errorMsg$ | async).length">
-  <textarea  cols="100" rows="10" *ngIf="(isUploadToTextArea$ | async)">{{jsonEntities$ | async }}</textarea>
-  <textarea  cols="100" rows="10" *ngIf="!(isUploadToTextArea$ | async)"></textarea>
+  <textarea #textarea cols="100" rows="10" *ngIf="(isUploadToTextArea$ | async)">{{jsonEntities$ | async }}</textarea>
+  <textarea #textarea cols="100" rows="10" *ngIf="!(isUploadToTextArea$ | async)"></textarea>
 </div>
 <div class="errorContainer">
   <span class="error" *ngIf="(errorMsg$ | async).length">{{(errorMsg$ | async)}}</span>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as layout from '../state/layout/actions';
 import * as entities from '../state/entities/actions';
 import {select, Store} from '@ngrx/store';
@@ -6,7 +6,6 @@ import {getEntities, getErrorMessage, getJsonEntities, getUploadToTextArea} from
 import {Observable} from 'rxjs';
 import {Entity} from '../state/entities/actions';
 
-declare let $: any;
 
 @Component({
   selector: 'app-download-page',
@@ -14,6 +13,8 @@ declare let $: any;
   styleUrls: ['./download-page.component.css']
 })
 export class DownloadPageComponent implements OnInit {
+  @ViewChild('textarea') textarea: ElementRef;
+
   isUploadToTextArea$: Observable<boolean>;
   entities$: Observable<Entity>;
   jsonEntities$: Observable<string>;
@@ -29,7 +30,7 @@ export class DownloadPageComponent implements OnInit {
   }
 
   openTableBlock(): void {
-    let json = $('textarea').val().replace(/(['"])?([a-z0-9A-Z_а-яА-ЯёЁ \-]+)(['"])?([ ]*)?:/g, '"$2": ');
+    let json = this.textarea.nativeElement.value.replace(/(['"])?([a-z0-9A-Z_а-яА-ЯёЁ \-]+)(['"])?([ ]*)?:/g, '"$2": ');
     json = `{"entities": ${json}}`;
 
     this.downloadJson(json);
