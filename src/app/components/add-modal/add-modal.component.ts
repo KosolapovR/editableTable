@@ -1,51 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {select, Store} from '@ngrx/store';
-import {getfirstEntity} from '../../state/entities/selectors';
-import {Observable} from 'rxjs';
-import {Entity} from '../../state/entities/actions';
-import * as entities from  '../../state/entities/actions';
-import {KeyValue} from '@angular/common';
-declare var $: any;
+import {Component} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-modal',
   templateUrl: './add-modal.component.html',
   styleUrls: ['./add-modal.component.css']
 })
-export class AddModalComponent implements OnInit {
-  firstEntity$: Observable<Entity>;
-  private modalRef;
-  constructor(private modalService: NgbModal, private store: Store) {
-    this.firstEntity$ = store.pipe(select(getfirstEntity));
-  }
+export class AddModalComponent {
 
-  ngOnInit(): void {
+  private modalRef;
+
+  constructor(private modalService: NgbModal) {
   }
 
   open(content): void {
     this.modalRef = this.modalService.open(content);
   }
-
-  closeModal(): void {
-    const inputs = $('#add-form input');
-    let str = '{"entity": {';
-
-    inputs.each((i, input) => {
-      if (i === 0){
-        str += `"${input.id}":"${input.value.replace(/"/g, '\\"')}"`;
-      }else{
-        str += `,"${input.id}":"${input.value.replace(/"/g, '\\"')}"`;
-      }
-    });
-    str += '}}';
-
-    const entity: Entity = JSON.parse(str).entity;
-    this.store.dispatch(new entities.AddEntityAction(entity));
-    this.modalService.dismissAll();
-  }
-
-  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
-    return 0;
-  };
 }

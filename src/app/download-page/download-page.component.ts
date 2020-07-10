@@ -5,6 +5,7 @@ import {select, Store} from '@ngrx/store';
 import {getEntities, getErrorMessage, getJsonEntities, getUploadToTextArea} from '../state/entities/selectors';
 import {Observable} from 'rxjs';
 import {Entity} from '../state/entities/actions';
+
 declare let $: any;
 
 @Component({
@@ -49,9 +50,9 @@ export class DownloadPageComponent implements OnInit {
     reader.readAsText(this.csvFile);
 
     reader.onload = function() {
+
       let arr = self.CSVtoArray(reader.result);
       let json = self.arrayToJson(arr);
-      debugger;
       self.downloadJson(json, true);
     };
 
@@ -81,11 +82,10 @@ export class DownloadPageComponent implements OnInit {
 
   private downloadJson(json: string, csv: boolean = false) {
     let payload;
-    debugger;
     try {
-      if(!csv){
+      if (!csv) {
         payload = JSON.parse(json.replace(/(['"])?([ a-z0-9A-Z_а-яА-Я]+)(['"])?:/g, '"$2": '));
-      }else{
+      } else {
         payload = JSON.parse(json);
       }
     } catch (e) {
@@ -105,31 +105,43 @@ export class DownloadPageComponent implements OnInit {
     }
   }
 
-  arrayToJson(arr: Array<Array<any>>): string{
+  arrayToJson(arr: Array<Array<any>>): string {
     let json = '';
     const entitiesArray = [];
-    for(let row = 1; row < arr.length; row++){
+    for (let row = 1; row < arr.length; row++) {
       let entity = {};
-      for(let col = 0; col < arr[0].length; col++){
+      for (let col = 0; col < arr[0].length; col++) {
         entity[arr[0][col]] = arr[row][col];
       }
       entitiesArray.push(entity);
     }
     json = `{"entities": ${JSON.stringify(entitiesArray)}}`;
-    return json
+    return json;
   }
 
   CSVtoArray(text) {
     let p = '', row = [''], ret = [row], i = 0, r = 0, s = !0, l;
     for (l of text) {
       if ('"' === l) {
-        if (s && l === p) row[i] += l;
+        if (s && l === p) {
+          row[i] += l;
+        }
         s = !s;
-      } else if (',' === l && s) l = row[++i] = '';
-      else if ('\n' === l && s) {
-        if ('\r' === p) row[i] = row[i].slice(0, -1);
-        row = ret[++r] = [l = '']; i = 0;
-      } else row[i] += l;
+      } else if (',' === l && s) {
+        l = row[++i] = '';
+      } else if ('\n' === l && s) {
+        if ('\r' === p) {
+          row[i] = row[i].slice(0, -1);
+        }
+        row = ret[++r] = [l = ''];
+        i = 0;
+      } else {
+        if('"' === l) {
+          row[i] += "\"";
+        }else{
+          row[i] += l;
+        }
+      }
       p = l;
     }
     ret.pop();

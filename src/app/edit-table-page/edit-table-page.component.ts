@@ -51,7 +51,7 @@ export class EditTablePageComponent implements OnInit {
 
     });
 
-    const csvData = this.convertArrayOfObjectsToCSV({data: entitiesForUpload});
+    const csvData = this.convertArrayOfObjectsToCSV({data: entitiesForUpload, lineDelimiter: '\r\n'});
 
     let blob = new Blob([csvData], {type: "text/csv;charset=utf-8"});
     FileSaver.saveAs(blob, "data.csv");
@@ -83,12 +83,11 @@ export class EditTablePageComponent implements OnInit {
           item[key] = `"${item[key]}"`;
         }
 
-        result += item[key];
+        result += item[key].replace(/"/g, '\"');
         ctr++;
       });
       result += lineDelimiter;
     });
-
     return result;
   }
 

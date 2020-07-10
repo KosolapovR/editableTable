@@ -10,17 +10,23 @@ import {AddModalComponent} from './components/add-modal/add-modal.component';
 import {EditModalComponent} from './components/edit-modal/edit-modal.component';
 import { EditCellComponent } from './components/edit-cell/edit-cell.component';
 import {FormsModule} from '@angular/forms';
+import { InputTextComponent } from './components/input-text/input-text.component';
+import { AddFormComponent } from './components/add-modal/add-form/add-form.component';
+import { EditFormComponent } from './components/edit-modal/edit-form/edit-form.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DownloadPageComponent,
-    EditTablePageComponent,
-    AddModalComponent,
-    EditModalComponent,
-    EditCellComponent,
-  ],
+    declarations: [
+        AppComponent,
+        DownloadPageComponent,
+        EditTablePageComponent,
+        AddModalComponent,
+        EditModalComponent,
+        EditCellComponent,
+        InputTextComponent,
+        AddFormComponent,
+        EditFormComponent,
+    ],
   imports: [
     BrowserModule,
     NgbModule,

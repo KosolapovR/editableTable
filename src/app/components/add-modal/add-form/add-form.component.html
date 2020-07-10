@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Добавить строку</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form id="add-form">
+    <div class="form-group">
+      <div class="container" *ngFor="let entity of firstEntity$|async|keyvalue : originalOrder; let i = index">
+        <div class="row mb-2" *ngIf="entity.key !== 'id'">
+          <label class="col-3">{{entity.key}}</label>
+          <div class="input-group col-9">
+            <input #input class="w-100" id="{{entity.key}}" name="{{entity.key}}" type="text"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="closeModal()">Добавить</button>
+</div>
